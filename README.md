@@ -9,7 +9,7 @@ A web application that converts Office documents to clean Markdown format. Built
 - Multiple file conversion support
 - Real-time Markdown preview
 - Download individual Markdown files
-- Download all conversions as ZIP
+- Download all Markdown files as ZIP
 - Copy Markdown to clipboard
 - Beautiful UI with responsive design
 
