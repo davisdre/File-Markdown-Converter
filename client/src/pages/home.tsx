@@ -143,6 +143,9 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <footer className="absolute bottom-0 left-0 right-0 text-center p-4 text-sm text-gray-600">
+        Made by <a href="https://x.com/davisdredotcom" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Drew</a> with ❤️ | Powered by <a href="https://replit.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Replit</a>
+      </footer>
     </div>
   );
 }
