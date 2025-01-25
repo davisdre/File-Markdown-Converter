@@ -5,7 +5,8 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { FileType, Copy, Check } from "lucide-react";
+import { FileType, Copy, Check, Download } from "lucide-react";
+import JSZip from "jszip";
 import { convertFile } from "@/lib/api";
 
 interface ConversionResult {
@@ -51,6 +52,24 @@ export default function Home() {
       formData.append("file", file);
       convertMutation.mutate(formData);
     }
+  };
+
+  const handleDownloadAll = async () => {
+    const zip = new JSZip();
+    
+    conversions.forEach((conversion) => {
+      zip.file(`${conversion.fileName.split(".")[0]}.md`, conversion.markdown);
+    });
+    
+    const content = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(content);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "all-markdown.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const handleDownload = (conversion: ConversionResult) => {
@@ -102,6 +121,14 @@ export default function Home() {
             onFileSelect={handleFileSelect}
             isLoading={convertMutation.isPending}
           />
+          {conversions.length > 0 && (
+            <div className="mt-4">
+              <Button onClick={handleDownloadAll} variant="outline" className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Download All as ZIP
+              </Button>
+            </div>
+          )}
 
           {files.length > 0 && !convertMutation.isPending && (
             <div className="mt-4 flex flex-col gap-2">
