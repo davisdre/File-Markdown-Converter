@@ -105,7 +105,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6 relative pb-20">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
@@ -121,15 +121,6 @@ export default function Home() {
             onFileSelect={handleFileSelect}
             isLoading={convertMutation.isPending}
           />
-          {conversions.length > 0 && (
-            <div className="mt-4">
-              <Button onClick={handleDownloadAll} variant="outline" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download All as ZIP
-              </Button>
-            </div>
-          )}
-
           {files.length > 0 && !convertMutation.isPending && (
             <div className="mt-4 flex flex-col gap-2">
               <div className="text-sm font-medium text-gray-700">Uploaded Files:</div>
@@ -139,6 +130,15 @@ export default function Home() {
                   <span>{file.name}</span>
                 </div>
               ))}
+            </div>
+          )}
+          
+          {conversions.length > 0 && (
+            <div className="mt-4">
+              <Button onClick={handleDownloadAll} variant="outline" className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Download All as ZIP
+              </Button>
             </div>
           )}
         </Card>
@@ -170,7 +170,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <footer className="absolute bottom-0 left-0 right-0 text-center p-4 text-sm text-gray-600">
+      <footer className="fixed bottom-0 left-0 right-0 text-center p-4 text-sm text-gray-600 bg-white/80 backdrop-blur-sm border-t">
         Made by <a href="https://x.com/davisdredotcom" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Drew</a> with ❤️ | Powered by <a href="https://replit.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Replit</a>
       </footer>
     </div>
