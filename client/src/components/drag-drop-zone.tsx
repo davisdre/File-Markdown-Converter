@@ -4,7 +4,7 @@ import { Upload } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface DragDropZoneProps {
-  onFileSelect: (file: File) => void;
+  onFileSelect: (files: File[]) => void;
   isLoading?: boolean;
 }
 
@@ -21,7 +21,7 @@ export function DragDropZone({ onFileSelect, isLoading = false }: DragDropZonePr
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
-        onFileSelect(acceptedFiles[0]);
+        onFileSelect(acceptedFiles);
       }
     },
     [onFileSelect]
@@ -30,7 +30,7 @@ export function DragDropZone({ onFileSelect, isLoading = false }: DragDropZonePr
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: ACCEPTED_FILES,
-    multiple: false,
+    multiple: true,
     onDragEnter: () => setIsDragActive(true),
     onDragLeave: () => setIsDragActive(false),
   });
@@ -54,10 +54,10 @@ export function DragDropZone({ onFileSelect, isLoading = false }: DragDropZonePr
         />
         <div className="space-y-2">
           <p className="text-sm font-medium">
-            {isLoading ? "Converting..." : "Drop your file here or click to browse"}
+            {isLoading ? "Converting..." : "Drop your files here or click to browse"}
           </p>
           <p className="text-xs text-gray-500">
-            Supports PDF, Word, PowerPoint, and Excel files
+            Supports multiple PDF, Word, PowerPoint, and Excel files
           </p>
         </div>
         {isLoading && <Progress value={30} className="w-full max-w-xs" />}
