@@ -34,7 +34,12 @@ export function registerRoutes(app: Express): Server {
       );
 
       // Clean up temp file
-      await fs.unlink(req.file.path);
+      const unlinkFilePath = path.join(os.tmpdir(), path.basename(req.file.path));
+      const realUnlinkFilePath = await fs.realpath(unlinkFilePath);
+      if (!realUnlinkFilePath.startsWith(os.tmpdir() + path.sep)) {
+        return res.status(400).send("Invalid file path");
+      }
+      await fs.unlink(realUnlinkFilePath);
 
       if (stderr) {
         console.error("Conversion error:", stderr);
