@@ -18,7 +18,7 @@ export function registerRoutes(app: Express): Server {
       }
 
       const { stdout, stderr } = await execAsync(
-        `python3 ${path.join(process.cwd(), "server", "convert.py")} "${req.file.path}"`
+        'python3', [path.join(process.cwd(), 'server', 'convert.py'), req.file.path]
       );
 
       // Clean up temp file
