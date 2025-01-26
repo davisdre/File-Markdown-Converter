@@ -6,12 +6,17 @@ import { exec, execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
 import path from "path";
 import os from "os";
+import rateLimit from "express-rate-limit";
 
 const execFile = promisify(execFileCallback);
 const upload = multer({ dest: os.tmpdir() });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
 
 export function registerRoutes(app: Express): Server {
-  app.post("/api/convert", upload.single("file"), async (req, res) => {
+  app.post("/api/convert", limiter, upload.single("file"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).send("No file uploaded");
