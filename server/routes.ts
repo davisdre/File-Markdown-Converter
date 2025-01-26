@@ -23,8 +23,9 @@ export function registerRoutes(app: Express): Server {
       }
 
       // Validate the file path
-      const filePath = req.file.path;
-      if (!filePath.startsWith(os.tmpdir())) {
+      const filePath = path.resolve(req.file.path);
+      const realFilePath = await fs.realpath(filePath);
+      if (!realFilePath.startsWith(os.tmpdir())) {
         return res.status(400).send("Invalid file path");
       }
 
