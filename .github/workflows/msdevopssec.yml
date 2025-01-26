@@ -9,7 +9,7 @@
             name: Microsoft Security DevOps
 
             # Windows and Linux agents are supported
-            runs-on: linux-latest
+            runs-on: ubuntu-latest
 
             permissions:
               contents: read
