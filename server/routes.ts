@@ -7,7 +7,7 @@ import { promisify } from "util";
 import path from "path";
 import os from "os";
 
-const execFile = promisify(exec);
+const execFile = promisify(execFileCallback);
 const upload = multer({ dest: os.tmpdir() });
 
 export function registerRoutes(app: Express): Server {
