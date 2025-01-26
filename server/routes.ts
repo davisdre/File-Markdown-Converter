@@ -2,12 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { promises as fs } from "fs";
-import { exec } from "child_process";
+import { exec, execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
 import path from "path";
 import os from "os";
 
-const execFile = promisify(require('child_process').execFile);
+const execFile = promisify(exec);
 const upload = multer({ dest: os.tmpdir() });
 
 export function registerRoutes(app: Express): Server {
