@@ -7,7 +7,7 @@ import { promisify } from "util";
 import path from "path";
 import os from "os";
 
-const execAsync = promisify(exec);
+const execFile = promisify(require('child_process').execFile);
 const upload = multer({ dest: os.tmpdir() });
 
 export function registerRoutes(app: Express): Server {
@@ -17,8 +17,14 @@ export function registerRoutes(app: Express): Server {
         return res.status(400).send("No file uploaded");
       }
 
-      const { stdout, stderr } = await execAsync(
-        'python3', [path.join(process.cwd(), 'server', 'convert.py'), req.file.path]
+      // Validate the file path
+      const filePath = req.file.path;
+      if (!filePath.startsWith(os.tmpdir())) {
+        return res.status(400).send("Invalid file path");
+      }
+
+      const { stdout, stderr } = await execFile('python3', 
+        [path.join(process.cwd(), 'server', 'convert.py'), filePath]
       );
 
       // Clean up temp file
